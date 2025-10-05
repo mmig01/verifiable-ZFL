@@ -1,13 +1,16 @@
 #!/bin/bash
 
-# 2. 첫 번째 인자(C++ 소스 파일)가 있는지 확인
 if [ -z "$1" ]; then
-    echo "error! how to use: $0 <cpp_source_file>"
+    echo "how to use: $0 <cpp_source_file>"
     exit 1
 fi
 
 SOURCE_FILE=$1
 EXECUTABLE_NAME=${SOURCE_FILE%.cpp}
+
+OUTPUT_DIR="build/bin"
+
+mkdir -p "$OUTPUT_DIR"
 
 MESSAGE="|| Compiling '$SOURCE_FILE' to '$EXECUTABLE_NAME' ||"
 
@@ -22,7 +25,12 @@ echo "$BORDER"
 g++ -std=c++17 -Wall -o "$EXECUTABLE_NAME" "$SOURCE_FILE"
 
 if [ $? -eq 0 ]; then
+    mv "$EXECUTABLE_NAME" "$OUTPUT_DIR/"
+    cd "$OUTPUT_DIR"
+    
     ./"$EXECUTABLE_NAME"
+
+    cd - > /dev/null
 else
     echo "error!"
     exit 1
