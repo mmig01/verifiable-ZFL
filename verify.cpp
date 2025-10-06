@@ -44,9 +44,9 @@ mpz_class polyval_gmp(const std::vector<mpz_class>& poly, const mpz_class& x, co
 int main() {
     try {
         // --- 1. Parameter Setup ---
-        const int q_bits = 60;
-        const int alpha_bits = 60;
-        const size_t n_clients = 5;
+        const int q_bits = 120;
+        const int alpha_bits = 120;
+        const size_t n_clients = 100;
         const size_t ki = 262144;
 
         // --- Initialize GMP Random State ---

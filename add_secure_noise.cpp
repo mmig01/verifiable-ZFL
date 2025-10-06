@@ -102,7 +102,7 @@ int main() {
         // --- Parameter Setup ---
         // These values match the Rust example.
         const size_t vector_length = 1;
-        const size_t client_num = 5;
+        const size_t client_num = 100;
         const size_t ki = 262144;
 
         // --- Generate random seeds for each client ---
