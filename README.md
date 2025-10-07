@@ -33,7 +33,7 @@ const size_t ki = 262144;
 
 ```c++
 // run
-./build_and_run.sh verify.cpp -lgmpxx -lgmp
+./build_and_run.sh verify.cpp -lssl -lcrypto -lgmpxx -lgmp
   
 // parameter setting
 const int q_bits = 120;
