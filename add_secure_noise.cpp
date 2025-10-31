@@ -123,8 +123,8 @@ int main() {
         try {
             // --- Parameter Setup ---
             const size_t vector_length = 1;
-            const size_t client_num = 40;
-            const size_t ki = 256 * int(pow(4, i)); // 256, 1024, 4096, 16384, 65536, 262144
+            const size_t client_num = 10 + i * 10; // 10, 20, ..., 60
+            const size_t ki = 262144;
             const std::string csv_filename = "add_secure_noise.csv";
 
             // --- Generate random seeds for each client ---
