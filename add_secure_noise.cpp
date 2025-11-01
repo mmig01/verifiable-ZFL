@@ -83,7 +83,7 @@ std::vector<std::vector<int8_t>> make_list_of_binomial_vector(uint64_t seed, siz
 void save_results_to_csv(
     const std::string& filename,
     size_t client_num,
-    size_t ki,
+    size_t kappa,
     size_t vector_length,
     long long duration_ms,
     int64_t final_value
@@ -103,12 +103,12 @@ void save_results_to_csv(
 
     // If the file did not exist before, write the header row
     if (!file_exists) {
-        csv_file << "client_num,ki,vector_length,time_ms,final_value\n";
+        csv_file << "client_num,kappa,vector_length,time_ms,final_value\n";
     }
 
     // Write the data row
     csv_file << client_num << ","
-             << ki << ","
+             << kappa << ","
              << vector_length << ","
              << duration_ms << ","
              << final_value << "\n";
@@ -123,8 +123,8 @@ int main() {
         try {
             // --- Parameter Setup ---
             const size_t vector_length = 1;
-            const size_t client_num = 10 + i * 10; // 10, 20, ..., 60
-            const size_t ki = 262144;
+            const size_t client_num = 10 + i * 10;
+            const size_t kappa = 262144;
             const std::string csv_filename = "add_secure_noise.csv";
 
             // --- Generate random seeds for each client ---
@@ -145,11 +145,11 @@ int main() {
             std::vector<std::vector<int8_t>> aggregated_list_of_vectors;
 
             for (size_t i = 0; i < client_num; ++i) {
-                std::vector<std::vector<int8_t>> temp_list = make_list_of_binomial_vector(seed_list[i], vector_length, ki);
+                std::vector<std::vector<int8_t>> temp_list = make_list_of_binomial_vector(seed_list[i], vector_length, kappa);
                 if (i == 0) {
                     aggregated_list_of_vectors = std::move(temp_list);
                 } else {
-                    for (size_t j = 0; j < ki; ++j) {
+                    for (size_t j = 0; j < kappa; ++j) {
                         for (size_t l = 0; l < vector_length; ++l) {
                             aggregated_list_of_vectors[j][l] *= temp_list[j][l];
                         }
@@ -158,7 +158,7 @@ int main() {
             }
 
             std::vector<int64_t> sum_of_binomial_vector(vector_length, 0);
-            for (size_t i = 0; i < ki; ++i) {
+            for (size_t i = 0; i < kappa; ++i) {
                 for (size_t j = 0; j < vector_length; ++j) {
                     sum_of_binomial_vector[j] += aggregated_list_of_vectors[i][j];
                 }
@@ -170,7 +170,7 @@ int main() {
             // --- Output results to console ---
             std::cout << "--------------------------------------------------------" << std::endl;
             std::cout << "C++ (ZKP_DPFL Logic): Time taken to generate secure noise for "
-                    << client_num << " clients (ki=" << ki << ", length=" << vector_length
+                    << client_num << " clients (kappa=" << kappa << ", length=" << vector_length
                     << "): " << duration.count() << " ms" << std::endl;
             
             int64_t final_sum_value = sum_of_binomial_vector.empty() ? 0 : sum_of_binomial_vector[0];
@@ -178,7 +178,7 @@ int main() {
             std::cout << "--------------------------------------------------------" << std::endl;
 
             // --- Save results to CSV file ---
-            save_results_to_csv(csv_filename, client_num, ki, vector_length, duration.count(), final_sum_value);
+            save_results_to_csv(csv_filename, client_num, kappa, vector_length, duration.count(), final_sum_value);
 
         } catch (const std::exception& e) {
             std::cerr << "Error: " << e.what() << std::endl;

@@ -174,7 +174,7 @@ int main() {
             // --- 1. Parameter Setup ---
             const int q_bits = 128;
             const size_t n_clients = 10 + i * 10;
-            const size_t kappa = 262144; // Renamed from ki
+            const size_t kappa = 262144;
             const std::string csv_filename = "prover_full_proof.csv"; // New filename
 
             gmp_randstate_t rand_state;

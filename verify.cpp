@@ -133,7 +133,7 @@ int main() {
             // --- 1. Parameter Setup ---
             const int q_bits = 120;
             const size_t n_clients = 10 + i * 10;
-            const size_t kappa = 262144; // Renamed from ki
+            const size_t kappa = 262144;
             const std::string csv_filename = "verifier_receiver_full.csv";
 
             gmp_randstate_t rand_state;
@@ -204,7 +204,10 @@ int main() {
             mpz_class other_clients_last_F0_sum = 0;
             mpz_class other_clients_last_F1_sum = 0;
             
-            // Note: This pre-computation is a simplified simulation.
+            // ====================== Timer Starts Here ======================
+            auto start = std::chrono::high_resolution_clock::now();
+            size_t communication_size_bytes = 0;
+
             // A full simulation would require each 'other' client to run the
             // full 'update_for_kappa_proof' logic.
             // For this benchmark, we just generate random evaluated values.
@@ -228,9 +231,7 @@ int main() {
             }
             
 
-            // ====================== Timer Starts Here ======================
-            auto start = std::chrono::high_resolution_clock::now();
-            size_t communication_size_bytes = 0;
+            
 
             // --- 4. Verifier (Client 0) `update_for_kappa_proof` ---
             mpz_class u_const = u_secrets[0];
